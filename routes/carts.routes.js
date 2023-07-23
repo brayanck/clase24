@@ -9,13 +9,13 @@ router.use(isAuthenticated)
 
 router.get('/', async (req, res) => {
   try {
-    const usuarioEmail = req.user.email; // Supongamos que obtienes el ID del usuario desde la autenticación
-    const usuario = await User.findOne({email:usuarioEmail}); // Obtenemos el usuario y poblamos el campo 'cart' con el carrito
+    const usuarioEmail = req.user.email; 
+    const usuario = await User.findOne({email:usuarioEmail}); 
 
     if (!usuario) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
-    res.json(usuario.cartId); // Devolvemos el carrito del usuario
+    res.json(usuario.cartId);
   } catch (error) {
     console.error('Error al obtener el carrito:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -94,7 +94,7 @@ router.put("/:cid/products/:pid", async (req, res) => {
       if (cartItem) {
         const updatedCart = await Cart.findOneAndUpdate(
           { _id: carrito, "cart.product": producto },
-          { $inc: { "cart.$.count": count } }, // Utilizamos $set en lugar de $inc
+          { $inc: { "cart.$.count": count } },
           { new: true }
         );
         return res.json(updatedCart);
